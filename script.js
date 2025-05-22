@@ -3,13 +3,20 @@ const typingName = document.querySelector('.typing-name');
 const typingDesc = document.querySelector('.typing-desc');
 
 const name = "King David";
-const description = "Aspiring Software Engineer.";
+const descriptions = [
+  "Computer Science Student.",
+  "Aspiring Software Engineer."
+];
 
-const typingSpeed = 100; // milliseconds per character
+const typingSpeed = 100; // milliseconds per character while typing
+const deletingSpeed = 50; // milliseconds per character while deleting
 const pauseAfterTyping = 1500; // pause after full text is typed
+const pauseAfterDeleting = 500; // pause after full text is deleted
 
 let nameCharIndex = 0;
+let descIndex = 0;
 let descCharIndex = 0;
+let isDeleting = false;
 
 function typeName() {
     if (nameCharIndex < name.length) {
@@ -17,59 +24,64 @@ function typeName() {
         nameCharIndex++;
         setTimeout(typeName, typingSpeed);
     } else {
-        setTimeout(typeDesc, pauseAfterTyping); // Wait before starting description
+        setTimeout(typeDescLoop, pauseAfterTyping);
     }
 }
 
-function typeDesc() {
-    if (descCharIndex < description.length) {
-        typingDesc.textContent += description.charAt(descCharIndex);
+function typeDescLoop() {
+    const currentText = descriptions[descIndex];
+
+    if (isDeleting) {
+        descCharIndex--;
+        typingDesc.textContent = currentText.substring(0, descCharIndex);
+    } else {
         descCharIndex++;
-        setTimeout(typeDesc, typingSpeed);
+        typingDesc.textContent = currentText.substring(0, descCharIndex);
+    }
+
+    if (!isDeleting && descCharIndex === currentText.length) {
+        isDeleting = true;
+        setTimeout(typeDescLoop, pauseAfterTyping);
+    } else if (isDeleting && descCharIndex === 0) {
+        isDeleting = false;
+        descIndex = (descIndex + 1) % descriptions.length;
+        setTimeout(typeDescLoop, pauseAfterDeleting);
+    } else {
+        const speed = isDeleting ? deletingSpeed : typingSpeed;
+        setTimeout(typeDescLoop, speed);
     }
 }
 
-// Start the typing animations
-setTimeout(typeName, 500); // Initial small delay
+// Start the typing animation
+setTimeout(typeName, 500);
 
 // ===== SCROLL ANIMATIONS ===== //
 const animateOnScroll = () => {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                // Section Titles (slide down)
                 if (entry.target.classList.contains('section-title')) {
                     entry.target.classList.add('animate-title');
                 }
-
-                // About Section (left/right)
                 if (entry.target.classList.contains('about-text')) {
                     entry.target.classList.add('animate-left');
                 }
                 if (entry.target.classList.contains('about-image')) {
                     entry.target.classList.add('animate-right');
                 }
-
-                // Contact Section (left/right)
                 if (entry.target.classList.contains('contact-info')) {
                     entry.target.classList.add('animate-left');
                 }
                 if (entry.target.classList.contains('contact-form')) {
                     entry.target.classList.add('animate-right');
                 }
-
-                // Skills Cards (fade only)
                 if (entry.target.classList.contains('skill-card')) {
                     entry.target.style.animation = 'fadeIn 0.8s ease-out forwards';
                 }
-
-                // Project Cards (fade only)
                 if (entry.target.classList.contains('project-card')) {
                     entry.target.style.animation = 'fadeIn 0.8s ease-out forwards';
                 }
-
             } else {
-                // Exit animations (reverse)
                 if (entry.target.classList.contains('section-title')) {
                     entry.target.classList.remove('animate-title');
                 }
@@ -89,19 +101,14 @@ const animateOnScroll = () => {
         });
     }, { threshold: 0.1 });
 
-    // Observe elements
     document.querySelectorAll(
         '.section-title, .about-text, .about-image, .contact-info, .contact-form, .skill-card, .project-card'
-    ).forEach(el => {
-        observer.observe(el);
-    });
+    ).forEach(el => observer.observe(el));
 };
 
-// Initialize animations
 document.addEventListener('DOMContentLoaded', () => {
     animateOnScroll();
-    
-    // Handle tab changes for skills
+
     const tabBtns = document.querySelectorAll('.tab-btn');
     tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -120,7 +127,6 @@ const darkModeToggle = document.querySelector('.dark-mode-toggle');
 const body = document.body;
 const icon = darkModeToggle.querySelector('i');
 
-// Check for saved user preference
 const currentTheme = localStorage.getItem('theme');
 if (currentTheme === 'dark') {
     body.classList.add('dark-mode');
@@ -130,7 +136,7 @@ if (currentTheme === 'dark') {
 
 darkModeToggle.addEventListener('click', () => {
     body.classList.toggle('dark-mode');
-    
+
     if (body.classList.contains('dark-mode')) {
         localStorage.setItem('theme', 'dark');
         icon.classList.remove('fa-moon');
@@ -151,7 +157,6 @@ burgerMenu.addEventListener('click', () => {
     burgerMenu.querySelector('i').classList.toggle('fa-times');
 });
 
-// Close mobile menu when clicking on a link
 document.querySelectorAll('.nav-links a').forEach(link => {
     link.addEventListener('click', () => {
         navLinks.classList.remove('active');
@@ -163,10 +168,10 @@ document.querySelectorAll('.nav-links a').forEach(link => {
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
         e.preventDefault();
-        
+
         const targetId = this.getAttribute('href');
         const targetElement = document.querySelector(targetId);
-        
+
         if (targetElement) {
             window.scrollTo({
                 top: targetElement.offsetTop - 80,
@@ -182,11 +187,9 @@ const tabContents = document.querySelectorAll('.tab-content');
 
 tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-        // Remove active class from all buttons and contents
         tabBtns.forEach(btn => btn.classList.remove('active'));
         tabContents.forEach(content => content.classList.remove('active'));
-        
-        // Add active class to clicked button and corresponding content
+
         btn.classList.add('active');
         const tabId = btn.getAttribute('data-tab');
         document.getElementById(tabId).classList.add('active');

@@ -117,6 +117,14 @@ body {
     100% { opacity: 1; }
 }
 
+.vscode {
+  filter: sepia(1) hue-rotate(170deg) saturate(4);
+}
+
+.vscode:hover {
+  color: white;
+}
+
 /* Add transition for exit animations */
 .about-content > div,
 .skills-tabs,
@@ -163,8 +171,23 @@ nav {
 }
 
 .logo {
+  color: #213547; /*Light Mode*/
   font-size: 1.5rem;
   font-weight: 700;
+}
+
+body.dark-mode .logo {
+  color: #f9f9f9; /*Dark Mode*/
+}
+
+.logo:hover {
+  color: var(--primary-hover);
+  text-decoration: none;
+}
+
+body.dark-mode .logo:hover {
+  color: var(--primary-hover);
+  text-decoration: none;
 }
 
 .nav-links {
@@ -430,6 +453,24 @@ section {
   margin-bottom: 15px;
   color: var(--primary-color);
   transition: var(--transition);
+}
+
+.skilll-card:hover .vercel {
+  mix-blend-mode: multiply;
+  color: white;
+}
+
+.icon-style {
+      font-size: 48px;
+      text-align: center;
+      display: inline-block;
+      padding-bottom: 5px;
+      color: #09c4d9;
+      transition: color 0.3s ease;
+}
+
+.icon-style:hover {
+      color: white;
 }
 
 /* Desktop layout for skills */
