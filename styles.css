@@ -1,3 +1,61 @@
+/* Loader Styles */
+.page-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #121212;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.6s ease-out;
+}
+
+.custom-loader {    
+    --r1: 154%;
+    --r2: 68.5%;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%; 
+    background:
+        radial-gradient(var(--r1) var(--r2) at top, #0000 79.5%, #00BCD4 80%),
+        radial-gradient(var(--r1) var(--r2) at bottom, #00BCD4 79.5%, #0000 80%),
+        radial-gradient(var(--r1) var(--r2) at top, #0000 79.5%, #00BCD4 80%),
+        #213547;
+    background-size: 50.5% 220%;
+    background-position: -100% 0%, 0% 0%, 100% 0%;
+    background-repeat: no-repeat;
+    animation: p9 2s infinite linear;
+}
+
+@keyframes p9 {
+    33%  {background-position: 0% 33%, 100% 33%, 200% 33%}
+    66%  {background-position: -100% 66%, 0% 66%, 100% 66%}
+    100% {background-position: 0% 100%, 100% 100%, 200% 100%}
+}
+
+.loader-text {
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+    color: #213547;
+}
+
+/* Content Styles */
+.page-content {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.page-content.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 :root {
   --primary-color: #00bcd4;
   --primary-hover: #00acc1;
@@ -153,7 +211,7 @@ a:hover {
 
 /* Navigation */
 nav {
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   width: 100%;
@@ -162,6 +220,7 @@ nav {
   backdrop-filter: blur(10px);
   z-index: 1000;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transform: none;
 }
 
 .nav-container {
@@ -265,39 +324,149 @@ body.dark-mode .logo:hover {
 }
 
 .contact-btn {
+  position: relative;
   display: inline-block;
   padding: 12px 30px;
-  background-color: var(--primary-color);
-  color: white;
   border-radius: 5px;
   font-weight: 500;
-  transition: var(--transition);
+  background-color: var(--primary-color);
+  color: white;
+  overflow: hidden;
+  box-shadow: 0 0 0 0 transparent;
+  -webkit-transition: all 0.2s ease-in;
+  -moz-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
 }
 
 .contact-btn:hover {
-  background-color: var(--primary-hover);
   color: #213547;
-  transform: translateY(-3px);
+  background-color: var(--primary-hover);
   box-shadow: 0 5px 15px rgba(0, 188, 212, 0.3);
+  -webkit-transition: all 0.2s ease-out;
+  -moz-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
 }
 
+.contact-btn:hover::before {
+  -webkit-animation: sh02 0.5s 0s linear;
+  -moz-animation: sh02 0.5s 0s linear;
+  animation: sh02 0.5s 0s linear;
+}
+
+.contact-btn::before {
+  content: '';
+  display: block;
+  width: 0px;
+  height: 86%;
+  position: absolute;
+  top: 7%;
+  left: 0%;
+  opacity: 0;
+  background: #fff;
+  box-shadow: 0 0 50px 30px #fff;
+  -webkit-transform: skewX(-20deg);
+  -moz-transform: skewX(-20deg);
+  -ms-transform: skewX(-20deg);
+  -o-transform: skewX(-20deg);
+  transform: skewX(-20deg);
+}
+
+@keyframes sh02 {
+  from {
+    opacity: 0;
+    left: 0%;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    left: 100%;
+  }
+}
+
+.contact-btn:active {
+  box-shadow: 0 0 0 0 transparent;
+  -webkit-transition: box-shadow 0.2s ease-in;
+  -moz-transition: box-shadow 0.2s ease-in;
+  transition: box-shadow 0.2s ease-in;
+}
+
+
 .message-btn {
+  position: relative;
   display: inline-block;
-  border-style: none;
   padding: 12px 30px;
+  border-radius: 5px;
+  border-style: none;
+  font-weight: 500;
   background-color: var(--primary-color);
   color: white;
-  border-radius: 5px;
-  font-weight: 500;
-  transition: var(--transition);
+  overflow: hidden;
+  box-shadow: 0 0 0 0 transparent;
+  -webkit-transition: all 0.2s ease-in;
+  -moz-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
 }
 
 .message-btn:hover {
-  background-color: var(--primary-hover);
   color: #213547;
-  transform: translateY(-3px);
+  background-color: var(--primary-hover);
   box-shadow: 0 5px 15px rgba(0, 188, 212, 0.3);
+  -webkit-transition: all 0.2s ease-out;
+  -moz-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
 }
+
+.message-btn:hover::before {
+  -webkit-animation: sh02 0.5s 0s linear;
+  -moz-animation: sh02 0.5s 0s linear;
+  animation: sh02 0.5s 0s linear;
+}
+
+.message-btn::before {
+  content: '';
+  display: block;
+  width: 0px;
+  height: 86%;
+  position: absolute;
+  top: 7%;
+  left: 0%;
+  opacity: 0;
+  background: #fff;
+  box-shadow: 0 0 50px 30px #fff;
+  -webkit-transform: skewX(-20deg);
+  -moz-transform: skewX(-20deg);
+  -ms-transform: skewX(-20deg);
+  -o-transform: skewX(-20deg);
+  transform: skewX(-20deg);
+}
+
+@keyframes sh02 {
+  from {
+    opacity: 0;
+    left: 0%;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    left: 100%;
+  }
+}
+
+.message-btn:active {
+  box-shadow: 0 0 0 0 transparent;
+  -webkit-transition: box-shadow 0.2s ease-in;
+  -moz-transition: box-shadow 0.2s ease-in;
+  transition: box-shadow 0.2s ease-in;
+}
+
 
 .hero-image {
   flex: 1;
@@ -394,19 +563,54 @@ section {
   gap: 10px;
 }
 
+/* From Uiverse.io by JaydipPrajapati1910 */ 
 .tab-btn {
+  background: transparent;
+  position: relative;
   padding: 10px 20px;
-  background-color: transparent;
-  border: 1px solid var(--primary-color);
-  color: var(--primary-color);
-  border-radius: 5px;
+  display: inline-block;
+  align-items: center;
+  font-size: 17px;
   cursor: pointer;
+  font-weight: 400;
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+  outline: none;
+  overflow: hidden;
+  color: var(--primary-color);
   transition: var(--transition);
+  text-align: center;
+}
+
+.tab-btn::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  content: '';
+  border-radius: 50%;
+  display: inline-block;
+  width: 17.3em;
+  height: 17.5em;
+  left: -5em;
+  text-align: center;
+  transition: box-shadow 0.5s ease-out;
+  z-index: -1;
+}
+
+.tab-btn:hover {
+  color: #fff;
+}
+
+.tab-btn:hover::before {
+  box-shadow: inset 0 0 0 10em #00BCD4;
 }
 
 .tab-btn.active {
   background-color: var(--primary-color);
-  color: white;
+  color: black;
 }
 
 .tab-content {
@@ -546,11 +750,6 @@ section {
 
 .project-info {
   padding: 20px;
-}
-
-.project-info:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0, 188, 212, 0.3);
 }
 
 .project-info h3 {

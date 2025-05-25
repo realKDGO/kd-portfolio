@@ -1,3 +1,38 @@
+// Wait for full page load (including images)
+window.addEventListener('load', function() {
+    const loader = document.querySelector('.page-loader');
+    const content = document.querySelector('.page-content');
+    
+    // Exit if elements don't exist
+    if (!loader || !content) return;
+    
+    // Minimum display time for loader (1.5 seconds)
+    setTimeout(function() {
+        // Fade out loader
+        loader.style.opacity = '0';
+        
+        // Wait for fade to complete
+        setTimeout(function() {
+            // Hide loader completely
+            loader.style.display = 'none';
+            
+            // Show content
+            content.classList.add('visible');
+        }, 800); // Must match CSS transition time
+    }, 1500);
+});
+
+// Fallback in case 'load' event never fires
+setTimeout(function() {
+    const loader = document.querySelector('.page-loader');
+    const content = document.querySelector('.page-content');
+    
+    if (loader && content) {
+        loader.style.display = 'none';
+        content.classList.add('visible');
+    }
+}, 5000); // 5 second absolute timeout
+
 // Typing Animation
 const typingName = document.querySelector('.typing-name');
 const typingDesc = document.querySelector('.typing-desc');
