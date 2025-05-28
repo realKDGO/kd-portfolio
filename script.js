@@ -199,21 +199,63 @@ document.querySelectorAll('.nav-links a').forEach(link => {
     });
 });
 
-// ===== SMOOTH SCROLLING ===== //
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
+// ===== 1. Disable browser scroll restoration =====
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
 
-        const targetId = this.getAttribute('href');
-        const targetElement = document.querySelector(targetId);
+// ===== 2. On load: remove hash and scroll to top =====
+window.addEventListener('DOMContentLoaded', () => {
+  // If there's a hash in the URL, strip it and scroll to top
+  if (window.location.hash) {
+    const pathWithoutHash = window.location.pathname + window.location.search;
 
-        if (targetElement) {
-            window.scrollTo({
-                top: targetElement.offsetTop - 80,
-                behavior: 'smooth'
-            });
-        }
+    // Remove the hash from the URL without reloading
+    history.replaceState(null, '', pathWithoutHash);
+
+    // Scroll to top after slight delay
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 0);
+  }
+
+  // ===== Smooth scrolling with offset for sticky nav =====
+  const OFFSET = 80;
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+
+      const targetId = this.getAttribute('href');
+      const target = document.querySelector(targetId);
+      if (target) {
+        const topOffset = target.getBoundingClientRect().top + window.scrollY - OFFSET;
+
+        window.scrollTo({
+          top: topOffset,
+          behavior: 'smooth'
+        });
+
+        // Optional: add hash without jumping
+        history.pushState(null, '', targetId);
+      }
     });
+  });
+
+  // Handle direct navigation to a hash (e.g., opening the page with #about)
+  if (window.location.hash) {
+    const target = document.querySelector(window.location.hash);
+    if (target) {
+      setTimeout(() => {
+        const elementPosition = target.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - OFFSET;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }, 0);
+    }
+  }
 });
 
 // ===== SKILLS TAB SWITCHING ===== //

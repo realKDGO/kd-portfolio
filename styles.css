@@ -83,11 +83,18 @@
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Poppins', sans-serif;
   line-height: 1.6;
   color: var(--text-color);
   background-color: var(--bg-color);
   transition: var(--transition);
+  margin-top: 20px; /* Space for sticky nav */;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+  position: relative; /* For absolute positioning of loader */
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 /* Add these new animation keyframes at the top of your CSS */
@@ -313,13 +320,13 @@ body.dark-mode .logo:hover {
 
 .hero-text h1 {
   font-size: 3rem;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   line-height: 1.2;
 }
 
 .hero-text p {
   font-size: 1.2rem;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
   opacity: 0.9;
 }
 
@@ -339,6 +346,7 @@ body.dark-mode .logo:hover {
 }
 
 .contact-btn:hover {
+  font-weight: bold;
   color: #213547;
   background-color: var(--primary-hover);
   box-shadow: 0 5px 15px rgba(0, 188, 212, 0.3);
@@ -412,6 +420,7 @@ body.dark-mode .logo:hover {
 }
 
 .message-btn:hover {
+  font-weight: 500;
   color: #213547;
   background-color: var(--primary-hover);
   box-shadow: 0 5px 15px rgba(0, 188, 212, 0.3);
